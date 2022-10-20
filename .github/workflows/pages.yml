@@ -1,19 +1,19 @@
-
-
 name: Run Postman Tests
 on:
+  workflow_dispatch:
   push:
     branches:
-      - main
-
+      - 'main' # (main branch) Set branch of the GH repo to push      
 jobs:
-  test-api:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Install Node
-        uses: actions/setup-node@v1
+  test_suite: # Name of the job
+      runs-on: ubuntu-20.04 # Choosing OS
+      steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
         with:
-          node-version: '16.x'
+          node-version: '16' # In command line run “node -v” and choose your version
+      - name: Install dependencies
+      - run: npm ci
 
       - name: Install newman
         run: npm install -g newman
@@ -23,10 +23,10 @@ jobs:
 
       - name: Install reporter
         run: npm install -g allure-commandline
-
+     #  - run: npm config set script-shell "G:\Git\bin\bash.exe"
       - name: Run POSTMAN collection
         run: npm run test
-
+ 
       - name: Generate Report
         if: always()
         run: npm run allure:report # Name of the allure generate script
@@ -47,4 +47,4 @@ jobs:
         if: always()
         with:
           branch: gh-pages # The branch the action should deploy to.
-          folder: allure-report # The folder the action should deploy.t
+          folder: allure-report # The folder the action should deploy.

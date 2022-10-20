@@ -1,0 +1,1029 @@
+{
+	"info": {
+		"_postman_id": "a6e2e3a0-c3c5-4996-8f9e-3e608d55221a",
+		"name": "store",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23566660"
+	},
+	"item": [
+		{
+			"name": "Products",
+			"item": [
+				{
+					"name": "List products",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const schema = {\r",
+									"    \"type\":\"array\",\r",
+									"    \"items\":\r",
+									"    {\r",
+									"        \"type\":\"object\",\r",
+									"        \"properties\":\r",
+									"        {\r",
+									"            \"id\":{\"type\":\"integer\"},\r",
+									"            \"name\":{\"type\":\"string\"},\r",
+									"            \"price\":{\"type\":\"integer\"},\r",
+									"            \"sku\":{\"type\":\"integer\"},\r",
+									"            \"description\":{\"type\":\"string\"}\r",
+									"        }\r",
+									"    }\r",
+									"}\r",
+									"pm.test(\"Response time is less than 300ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(300);\r",
+									"});\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Content-Type is present\", function () {\r",
+									"    pm.response.to.have.header(\"Content-Type\");\r",
+									"});\r",
+									"pm.test(\"Response schema is correct\",function(){\r",
+									"    pm.response.to.have.jsonSchema(schema);\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/products",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get product by ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const schema = {",
+									"    \"type\":\"object\",",
+									"    \"properties\":",
+									"        {",
+									"            \"id\":{\"type\":\"integer\"},",
+									"            \"name\":{\"type\":\"string\"},",
+									"            \"price\":{\"type\":\"integer\"},",
+									"            \"sku\":{\"type\":\"integer\"},",
+									"            \"description\":{\"type\":\"string\"}",
+									"        }",
+									"",
+									"}",
+									"pm.test(\"Response for product by ID time is less than 300ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(300);",
+									"});",
+									"pm.test(\"Status for product by ID code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Content-Type for product by ID is present\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"});",
+									"pm.test(\"Response schema for product by ID is correct\",function(){",
+									"    pm.response.to.have.jsonSchema(schema);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/products/3",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"products",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create product",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"const schema = {",
+									"    \"type\":\"object\",",
+									"    \"properties\":",
+									"        {",
+									"            \"name\":{\"type\":\"string\"},",
+									"            \"price\":{\"type\":\"number\"},",
+									"            \"sku\":{\"type\":\"integer\"},",
+									"            \"description\":{\"type\":\"string\",\"value\":\"New test product\"},",
+									"            \"id\":{\"type\":\"integer\"}",
+									"        },",
+									"    \"required\": [\"name\"]",
+									"",
+									"}",
+									"pm.test(\"Response for Create product time is less than 300ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(300);",
+									"});",
+									"",
+									"pm.test(\"Status for Create product code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test(\"Content-Type Create product  is present\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"});",
+									"",
+									"pm.test(\"Response schema for Create product is correct\",function(){",
+									"    pm.response.to.have.jsonSchema(schema);",
+									"});",
+									"pm.test(\"Name for Create product is correct\", () => {",
+									"  pm.expect(jsonData.name).to.eql(\"newProduct\"); // jsonData is not defined",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"newProduct\",\r\n    \"price\": 12,\r\n    \"sku\": 987789987,\r\n    \"description\": \"New test product\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/products",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update product",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"const schema = {",
+									"    \"type\":\"object\",",
+									"    \"properties\":",
+									"        {",
+									"            \"name\":{\"type\":\"string\"},",
+									"            \"price\":{\"type\":\"number\"},",
+									"            \"sku\":{\"type\":\"integer\"},",
+									"            \"description\":{\"type\":\"string\",\"value\":\"New test product\"},",
+									"            \"id\":{\"type\":\"integer\"}",
+									"        },",
+									"    \"required\": [\"name\"]",
+									"",
+									"}",
+									"pm.test(\"Response for Update product time is less than 300ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(300);",
+									"});",
+									"",
+									"pm.test(\"Status for Update product code is 201\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Content-Type Update product  is present\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"});",
+									"",
+									"pm.test(\"Response schema for Update product is correct\",function(){",
+									"    pm.response.to.have.jsonSchema(schema);",
+									"});",
+									"pm.test(\"Name for Create product is correct\", () => {",
+									"  pm.expect(jsonData.name).to.eql(\"banano\"); // jsonData is not defined",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 4,\r\n    \"name\": \"banano\",\r\n    \"price\": 155,\r\n    \"sku\": 123321123,\r\n    \"description\": \"changed description\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/products",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove product by ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"const schema = {",
+									"    \"type\":\"object\",",
+									"    \"properties\":",
+									"        {",
+									"            \"name\":{\"type\":\"string\"},",
+									"            \"price\":{\"type\":\"number\"},",
+									"            \"sku\":{\"type\":\"integer\"},",
+									"            \"description\":{\"type\":\"string\",\"value\":\"New test product\"},",
+									"            \"id\":{\"type\":\"integer\"}",
+									"        },",
+									"    \"required\": [\"name\"]",
+									"",
+									"}",
+									"pm.test(\"Response for Remove product time is less than 300ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(300);",
+									"});",
+									"",
+									"pm.test(\"Status for Remove product code is 201\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Content-Type Remove product  is present\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"});",
+									"",
+									"pm.test(\"Response schema for Remove product is correct\",function(){",
+									"    pm.response.to.have.jsonSchema(schema);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/products/4",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"products",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get deleted product by ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const schema = {",
+									"    \"type\":\"object\"",
+									"}",
+									"pm.test(\"Response for Get deleted product by ID time is less than 300ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(300);",
+									"});",
+									"pm.test(\"Status for Get deleted product by ID code is 404\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});",
+									"pm.test(\"Content-Type for Get deleted product by ID is present\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"});",
+									"pm.test(\"Response schema for Get deleted product by ID is correct\",function(){",
+									"    pm.response.to.have.jsonSchema(schema);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/products/4",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"products",
+								"4"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Orders",
+			"item": [
+				{
+					"name": "List orders",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const schema = {",
+									"    \"type\":\"array\",",
+									"    \"items\":",
+									"    {",
+									"        \"type\":\"object\",",
+									"        \"properties\":",
+									"        {",
+									"            \"id\":{\"type\":\"integer\"},",
+									"            \"name\":{\"type\":\"string\"},",
+									"            \"sku\":{\"type\":\"integer\"},",
+									"        }",
+									"    },",
+									"    \"required\":[\"id\",\"name\",\"sku\"]",
+									"}",
+									"pm.test(\"Response time for List Orders is less than 300ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(300);",
+									"});",
+									"pm.test(\"Status code for List Orders is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Content-Type for List Orders is present\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"});",
+									"pm.test(\"Response schema for List Orders is correct\",function(){",
+									"    pm.response.to.have.jsonSchema(schema);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/orders",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"orders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get order by ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const schema = {",
+									"    \"type\":\"object\",",
+									"    \"properties\":",
+									"        {",
+									"            \"id\":{\"type\":\"integer\"},",
+									"            \"name\":{\"type\":\"string\"},",
+									"            \"sku\":{\"type\":\"integer\"},",
+									"        }",
+									"}",
+									"pm.test(\"Response for Get order by ID time is less than 300ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(300);",
+									"});",
+									"pm.test(\"Status for Get order by ID code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Content-Type for Get order by ID is present\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"});",
+									"pm.test(\"Response schema for Get order by ID is correct\",function(){",
+									"    pm.response.to.have.jsonSchema(schema);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/orders/3",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"orders",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create order",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"const schema = {",
+									"    \"type\":\"object\",",
+									"    \"properties\":",
+									"        {",
+									"            \"name\":{\"type\":\"string\"},",
+									"            \"price\":{\"type\":\"number\"},",
+									"            \"sku\":{\"type\":\"integer\"},",
+									"            \"description\":{\"type\":\"string\",\"value\":\"New test product\"},",
+									"            \"id\":{\"type\":\"integer\"}",
+									"        },",
+									"    \"required\": [\"name\"]",
+									"",
+									"}",
+									"pm.test(\"Response for Create product time is less than 300ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(300);",
+									"});",
+									"",
+									"pm.test(\"Status for Create product code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test(\"Content-Type Create order  is present\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"});",
+									"",
+									"pm.test(\"Response schema for Create order is correct\",function(){",
+									"    pm.response.to.have.jsonSchema(schema);",
+									"});",
+									"pm.test(\"Name for Create order is correct\", () => {",
+									"  pm.expect(jsonData.name).to.eql(\"order5\"); // jsonData is not defined",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"order5\",\r\n    \"sku\": 123425445656765\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/orders",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"orders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update order",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"const schema = {",
+									"    \"type\":\"object\",",
+									"    \"properties\":",
+									"        {",
+									"            \"name\":{\"type\":\"string\"},",
+									"            \"price\":{\"type\":\"number\"},",
+									"            \"sku\":{\"type\":\"integer\"},",
+									"            \"description\":{\"type\":\"string\",\"value\":\"New test product\"},",
+									"            \"id\":{\"type\":\"integer\"}",
+									"        },",
+									"    \"required\": [\"name\"]",
+									"",
+									"}",
+									"pm.test(\"Response for Update product time is less than 300ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(300);",
+									"});",
+									"",
+									"pm.test(\"Status for Update product code is 201\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Content-Type Update product  is present\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"});",
+									"",
+									"pm.test(\"Response schema for Update product is correct\",function(){",
+									"    pm.response.to.have.jsonSchema(schema);",
+									"});",
+									"pm.test(\"Name for Create product is correct\", () => {",
+									"  pm.expect(jsonData.name).to.eql(\"order5\"); // jsonData is not defined",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 4,\r\n    \"name\": \"order5\",\r\n    \"sku\": 123425445656765\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/orders",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"orders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove order by ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"const schema = {",
+									"    \"type\":\"object\",",
+									"    \"properties\":",
+									"        {",
+									"            \"name\":{\"type\":\"string\"},",
+									"            \"price\":{\"type\":\"number\"},",
+									"            \"sku\":{\"type\":\"integer\"},",
+									"            \"description\":{\"type\":\"string\",\"value\":\"New test product\"},",
+									"            \"id\":{\"type\":\"integer\"}",
+									"        },",
+									"    \"required\": [\"name\"]",
+									"",
+									"}",
+									"pm.test(\"Response for Remove order by ID time is less than 300ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(300);",
+									"});",
+									"",
+									"pm.test(\"Status for Remove order by ID code is 201\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Content-Type Remove order by ID is present\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"});",
+									"",
+									"pm.test(\"Response schema for Remove order by ID is correct\",function(){",
+									"    pm.response.to.have.jsonSchema(schema);",
+									"});",
+									"pm.test(\"Name for Remove order by ID is correct\", () => {",
+									"  pm.expect(jsonData.name).to.eql(\"order5\"); // jsonData is not defined",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/orders/4",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"orders",
+								"4"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "List users",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const schema = {",
+									"    \"type\":\"array\",",
+									"    \"items\":",
+									"    {",
+									"        \"type\":\"object\",",
+									"        \"properties\":",
+									"        {",
+									"            \"id\":{\"type\":\"integer\"},",
+									"            \"firstName\":{\"type\":\"string\"},",
+									"            \"lastName\":{\"type\":\"string\"},",
+									"            \"email\":{\"type\":\"string\"},",
+									"            \"dateOfBirth\":{\"type\":\"string\"},",
+									"            \"emailVerified\":{\"type\":\"boolean\"},",
+									"            \"signUpDate\":{\"type\":\"string\"},",
+									"            \"status\":{\"type\":\"string\"},",
+									"            \"level\":{\"type\":\"string\"}",
+									"        }",
+									"    }",
+									"}",
+									"pm.test(\"Response time for List users is less than 300ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(300);",
+									"});",
+									"pm.test(\"Status code for List users is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Content-Type for List users is present\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"});",
+									"pm.test(\"Response schema  for List users is correct\",function(){",
+									"    pm.response.to.have.jsonSchema(schema);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/users",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get user by ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const schema = {",
+									"    \"type\":\"object\",",
+									"    \"properties\":",
+									"        {",
+									"            \"id\":{\"type\":\"integer\"},",
+									"            \"firstName\":{\"type\":\"string\"},",
+									"            \"lastName\":{\"type\":\"string\"},",
+									"            \"email\":{\"type\":\"string\"},",
+									"            \"dateOfBirth\":{\"type\":\"string\"},",
+									"            \"emailVerified\":{\"type\":\"boolean\"},",
+									"            \"signUpDate\":{\"type\":\"string\"},",
+									"            \"status\":{\"type\":\"string\"},",
+									"            \"level\":{\"type\":\"string\"}",
+									"        }",
+									"}",
+									"pm.test(\"Response time for Get user by ID is less than 300ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(300);",
+									"});",
+									"pm.test(\"Status code for Get user by ID is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Content-Type for Get user by ID is present\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"});",
+									"pm.test(\"Response schema  for Get user by ID is correct\",function(){",
+									"    pm.response.to.have.jsonSchema(schema);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/users/3",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const schema = {",
+									"    \"type\":\"object\",",
+									"    \"properties\":",
+									"        {",
+									"            \"id\":{\"type\":\"integer\"},",
+									"            \"firstName\":{\"type\":\"string\"},",
+									"            \"lastName\":{\"type\":\"string\"},",
+									"            \"email\":{\"type\":\"string\"},",
+									"            \"dateOfBirth\":{\"type\":\"string\"},",
+									"            \"emailVerified\":{\"type\":\"boolean\"},",
+									"            \"signUpDate\":{\"type\":\"string\"},",
+									"            \"status\":{\"type\":\"string\"},",
+									"            \"level\":{\"type\":\"string\"}",
+									"        }",
+									"}",
+									"pm.test(\"Response time for Create user is less than 300ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(300);",
+									"});",
+									"pm.test(\"Status code Create Get user is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"pm.test(\"Content-Type for Create user is present\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"});",
+									"pm.test(\"Response schema  for Create user is correct\",function(){",
+									"    pm.response.to.have.jsonSchema(schema);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\": \"Dream\",\r\n    \"lastName\": \"Real\",\r\n    \"email\": \"dream.real@gmail.com\",\r\n    \"dateOfBirth\": \"2001-10-99\",\r\n    \"emailVerified\": true,\r\n    \"signUpDate\": \"2019-08-24\",\r\n    \"status\": \"active\",\r\n    \"level\": \"lord\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/users",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const schema = {",
+									"    \"type\":\"object\",",
+									"    \"properties\":",
+									"        {",
+									"            \"id\":{\"type\":\"integer\"},",
+									"            \"firstName\":{\"type\":\"string\"},",
+									"            \"lastName\":{\"type\":\"string\"},",
+									"            \"email\":{\"type\":\"string\"},",
+									"            \"dateOfBirth\":{\"type\":\"string\"},",
+									"            \"emailVerified\":{\"type\":\"boolean\"},",
+									"            \"signUpDate\":{\"type\":\"string\"},",
+									"            \"status\":{\"type\":\"string\"},",
+									"            \"level\":{\"type\":\"string\"}",
+									"        }",
+									"}",
+									"pm.test(\"Response time for Update user  is less than 300ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(300);",
+									"});",
+									"pm.test(\"Status code Update user is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Content-Type for Update user is present\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"});",
+									"pm.test(\"Response schema  for Update user is correct\",function(){",
+									"    pm.response.to.have.jsonSchema(schema);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\": \"Ilon\",\r\n    \"lastName\": \"Mask\",\r\n    \"email\": \"ilon.mask@gmail.com\",\r\n    \"dateOfBirth\": \"2001-10-99\",\r\n    \"emailVerified\": true,\r\n    \"signUpDate\": \"2019-08-24\",\r\n    \"status\": \"active\",\r\n    \"level\": \"lord\",\r\n    \"id\": 10\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/users",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove user by ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const schema = {",
+									"    \"type\":\"object\",",
+									"    \"properties\":",
+									"        {",
+									"            \"id\":{\"type\":\"integer\"},",
+									"            \"firstName\":{\"type\":\"string\"},",
+									"            \"lastName\":{\"type\":\"string\"},",
+									"            \"email\":{\"type\":\"string\"},",
+									"            \"dateOfBirth\":{\"type\":\"string\"},",
+									"            \"emailVerified\":{\"type\":\"boolean\"},",
+									"            \"signUpDate\":{\"type\":\"string\"},",
+									"            \"status\":{\"type\":\"string\"},",
+									"            \"level\":{\"type\":\"string\"}",
+									"        }",
+									"}",
+									"pm.test(\"Response time for Remove user by ID  is less than 300ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(300);",
+									"});",
+									"pm.test(\"Status code for Remove user by ID is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Content-Type for Remove user by ID is present\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"});",
+									"pm.test(\"Response schema  for Delete user by ID is correct\",function(){",
+									"    pm.response.to.have.jsonSchema(schema);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/users/10",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								"10"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get deleted user by ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const schema = {",
+									"    \"type\":\"object\"",
+									"}",
+									"pm.test(\"Response time for Get deleted user by ID  is less than 300ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(300);",
+									"});",
+									"pm.test(\"Status for Get deleted user by ID code is 404\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});",
+									"pm.test(\"Content-Type for Get deleted user by ID is present\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"});",
+									"pm.test(\"Response schema for Get deleted user by ID is correct\",function(){",
+									"    pm.response.to.have.jsonSchema(schema);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/users/10",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								"10"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:3000",
+			"type": "string"
+		}
+	]
+}

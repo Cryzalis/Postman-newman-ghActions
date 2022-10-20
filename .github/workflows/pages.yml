@@ -1,0 +1,40 @@
+
+
+name: Run Petstore Postman Tests
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  test-api:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: '16.x'
+
+      - name: Install newman
+        run: npm install -g newman
+
+      - name: Install reporter
+        run: npm install -g allure-commandline
+
+      - name: Run POSTMAN collection
+        run: npm run test
+
+      # Upload the contents of Test Results directory to workspace
+      - name: Output the run Details
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: reports
+          path: allure-results
+
+      - name: Deploy
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: allure-results

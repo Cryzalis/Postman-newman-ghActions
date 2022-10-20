@@ -1,0 +1,25 @@
+{
+  "name": "mock-rest-api",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "tern-on-api": "cp mockApi/db_back_up.yaml mockApi/db_stage.yaml && npx yaml-server --hotReload=off --autoStart=off --port 3000 --database ./mockApi/db_stage.yaml",
+    "test":"newman run store.collection.json  -r allure"
+  },
+  "keywords": [
+    "api",
+    "mock",
+    "yaml-server",
+    "rest"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "newman": "^5.3.2",
+    "newman-reporter-allure": "^1.0.7",
+    "yaml-server": "^1.10.0"
+  },
+  "devDependencies": {
+    "allure-commandline": "^2.18.1"
+  }
+}

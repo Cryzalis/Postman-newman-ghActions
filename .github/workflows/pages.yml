@@ -30,7 +30,7 @@ jobs:
         run: npm run test
 
       - name: Generate report
-        run: npm run report
+        run: npm run allure:generate
         
 
       # Upload the contents of Test Results directory to workspace

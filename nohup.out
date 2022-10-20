@@ -1,0 +1,22 @@
+
+> mock-rest-api@1.0.0 tern-on-api
+> cp mockApi/db_back_up.yaml mockApi/db_stage.yaml && npx yaml-server --hotReload=off --autoStart=off --port 3000 --database ./mockApi/db_stage.yaml
+
+Static files served from ./
+Example app listening on port 3000!
+ GET /products 
+ GET /products/:id 
+ PUT /products 
+ DELETE /products/:id 
+
+ GET /orders 
+ GET /orders/:id 
+ PUT /orders 
+ DELETE /orders/:id 
+
+ GET /users 
+ GET /users/:id 
+ PUT /users 
+ DELETE /users/:id 
+
+

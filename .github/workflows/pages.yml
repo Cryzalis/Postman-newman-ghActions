@@ -27,12 +27,9 @@ jobs:
             - name: Install reporter
               run: npm install -g allure-commandline 
 
-            - name: run test server
-              run: npm run tern-on-api
-
-            - name: run tests
-              run: npm run test
-
+            - name: run test 
+              run: npm run all
+              
             - name: Create Report
               if: always()
               run: npm run allure:report

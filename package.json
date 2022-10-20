@@ -6,8 +6,8 @@
     "tern-on-api": "cp mockApi/db_back_up.yaml mockApi/db_stage.yaml && npx yaml-server --hotReload=off --autoStart=off --port 3000 --database ./mockApi/db_stage.yaml",
     "test":"newman run store.collection.json  -r allure",
     "report": "npx allure generate allure-results --clean -o allure-report && allure open allure-report",
-    "allure:generate": "npx allure generate allure-results --clean",
-    "clear": "rm -r allure-results/ || rm -r allure-report/"
+    "allure:report": "allure generate allure-results --clean -o allure-report",
+    "allure:clear": "rm -r allure-results/ allure-report/  || true"
   },
   "keywords": [
     "api",

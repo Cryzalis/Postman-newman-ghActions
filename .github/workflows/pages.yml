@@ -29,19 +29,24 @@ jobs:
       - name: Run POSTMAN collection
         run: npm run test
 
-      - name: Generate reports
-        run: npm run allure:generate
-        
-
-      # Upload the contents of Test Results directory to workspace
-      - name: Output the run Details
-        uses: actions/upload-artifact@v3
+      - name: Generate Report
+        if: always()
+        run: npm run allure:report # Name of the allure generate script
+      - name: Upload Results
+        uses: actions/upload-artifact@v1
         if: always()
         with:
-          name: reports
-          path: allure-report
-
-      - name: Deploy
-        uses: JamesIves/github-pages-deploy-action@v4
+          name: allure-results
+          path: ./allure-results # Name of the folder with allure results                    
+      - name: Publishing Allure artifact to Github Actions
+        uses: actions/upload-artifact@v2
+        if: always()
         with:
-          folder: allure-report
+          name: allure-report
+          path: allure-report       
+      - name: Deploy report
+        uses: JamesIves/github-pages-deploy-action@4.1.4
+        if: always()
+        with:
+          branch: gh-pages # The branch the action should deploy to.
+          folder: allure-report # The folder the action should deploy.t
